@@ -72,9 +72,14 @@ export default function AdminDashboardScreen() {
           <Text style={styles.greeting}>{getGreeting()},</Text>
           <Text style={styles.userName}>{user?.name?.split(' ')[0] || 'Admin'}</Text>
         </View>
-        <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-          <Ionicons name="log-out-outline" size={18} color="#FFFFFF" />
-        </TouchableOpacity>
+        <View style={styles.headerActions}>
+          <TouchableOpacity style={styles.moreButton} onPress={() => router.push('/(phase4)')}>
+            <Ionicons name="ellipsis-horizontal-circle" size={24} color="#374151" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+            <Ionicons name="log-out-outline" size={18} color="#FFFFFF" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.kpiGrid}>
@@ -125,6 +130,38 @@ export default function AdminDashboardScreen() {
           <Ionicons name="book-outline" size={16} color="#374151" />
           <Text style={styles.quickActionText}>Subjects</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.quickActionBtn} onPress={() => router.push('/(phase4)')}>
+          <Ionicons name="apps-outline" size={16} color="#374151" />
+          <Text style={styles.quickActionText}>All Features</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.quickActionBtn} onPress={() => router.push('/(phase4)/announcements')}>
+          <Ionicons name="megaphone-outline" size={16} color="#374151" />
+          <Text style={styles.quickActionText}>Announcements</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.quickActionBtn} onPress={() => router.push('/(phase4)/events')}>
+          <Ionicons name="calendar-outline" size={16} color="#374151" />
+          <Text style={styles.quickActionText}>Events</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.quickActionBtn} onPress={() => router.push('/(phase4)/exams')}>
+          <Ionicons name="document-text-outline" size={16} color="#374151" />
+          <Text style={styles.quickActionText}>Exams</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.quickActionBtn} onPress={() => router.push('/(phase4)/staff')}>
+          <Ionicons name="people-circle-outline" size={16} color="#374151" />
+          <Text style={styles.quickActionText}>Staff</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.quickActionBtn} onPress={() => router.push('/(phase4)/timetable')}>
+          <Ionicons name="time-outline" size={16} color="#374151" />
+          <Text style={styles.quickActionText}>Timetable</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.quickActionBtn} onPress={() => router.push('/(phase4)/admin-attendance')}>
+          <Ionicons name="calendar-outline" size={16} color="#374151" />
+          <Text style={styles.quickActionText}>Attendance</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.quickActionBtn} onPress={() => router.push('/(phase4)/school-settings')}>
+          <Ionicons name="settings-outline" size={16} color="#374151" />
+          <Text style={styles.quickActionText}>Settings</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.section}>
@@ -157,8 +194,10 @@ const styles = StyleSheet.create({
   loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F8FAFC' },
   loadingText: { marginTop: 12, fontSize: 14, color: '#6B7280' },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', padding: 20, paddingTop: 16 },
+  headerActions: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   greeting: { fontSize: 14, color: '#6B7280' },
   userName: { fontSize: 22, fontWeight: 'bold', color: '#111827' },
+  moreButton: { padding: 8, borderRadius: 10, backgroundColor: '#F3F4F6' },
   logoutButton: { backgroundColor: '#e35336', padding: 10, borderRadius: 10 },
   kpiGrid: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 16, gap: 12 },
   kpiCard: { flex: 1, minWidth: '47%', backgroundColor: '#FFFFFF', borderRadius: 12, borderWidth: 1, borderColor: '#E2E8F0', padding: 14 },

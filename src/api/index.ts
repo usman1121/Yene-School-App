@@ -1,6 +1,6 @@
 export { default as apiClient } from './client';
 
-export { authApi, userApi } from '@/lib/api/auth';
+export { authAPI, userAPI } from '@/lib/api/auth';
 export {
   attendanceApi,
   timetableApi,

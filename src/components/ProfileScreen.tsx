@@ -38,7 +38,7 @@ export function ProfileScreen({ fallbackInitial = 'U' }: { fallbackInitial?: str
     } finally {
       setLoading(false);
     }
-  }, [updateUser, user]);
+  }, [updateUser]);
 
   useEffect(() => { fetchProfile(); }, [fetchProfile]);
 
@@ -86,11 +86,11 @@ export function ProfileScreen({ fallbackInitial = 'U' }: { fallbackInitial?: str
 
   const displayUser = profile || user;
 
-  if (loading) {
-    return <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}><ActivityIndicator size="large" color={colors.primary} /></View>;
-  }
-
   const s = makeStyles(colors);
+
+  if (loading) {
+    return <View style={[s.loadingContainer, { backgroundColor: colors.background }]}><ActivityIndicator size="large" color={colors.primary} /></View>;
+  }
 
   return (
     <ScrollView style={[s.container, { backgroundColor: colors.background }]}>

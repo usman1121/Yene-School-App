@@ -55,9 +55,14 @@ export default function SuperAdminDashboardScreen() {
           <Text style={styles.greeting}>{getGreeting()},</Text>
           <Text style={styles.userName}>{user?.name?.split(' ')[0] || 'Admin'}</Text>
         </View>
-        <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-          <Ionicons name="log-out-outline" size={18} color="#FFFFFF" />
-        </TouchableOpacity>
+        <View style={styles.headerActions}>
+          <TouchableOpacity style={styles.moreButton} onPress={() => router.push('/(phase4)')}>
+            <Ionicons name="ellipsis-horizontal-circle" size={24} color="#374151" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+            <Ionicons name="log-out-outline" size={18} color="#FFFFFF" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.kpiGrid}>
@@ -104,6 +109,22 @@ export default function SuperAdminDashboardScreen() {
           <Ionicons name="settings-outline" size={16} color="#374151" />
           <Text style={styles.quickActionText}>Settings</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.quickActionBtn} onPress={() => router.push('/(phase4)')}>
+          <Ionicons name="apps-outline" size={16} color="#374151" />
+          <Text style={styles.quickActionText}>All Features</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.quickActionBtn} onPress={() => router.push('/(phase4)/school-admins')}>
+          <Ionicons name="person-circle-outline" size={16} color="#374151" />
+          <Text style={styles.quickActionText}>School Admins</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.quickActionBtn} onPress={() => router.push('/(phase4)/subscriptions')}>
+          <Ionicons name="diamond-outline" size={16} color="#374151" />
+          <Text style={styles.quickActionText}>Subscriptions</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.quickActionBtn} onPress={() => router.push('/(phase4)/announcements')}>
+          <Ionicons name="megaphone-outline" size={16} color="#374151" />
+          <Text style={styles.quickActionText}>Announcements</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -113,8 +134,10 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F8FAFC' },
   loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F8FAFC' },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', padding: 20, paddingTop: 16 },
+  headerActions: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   greeting: { fontSize: 14, color: '#6B7280' },
   userName: { fontSize: 22, fontWeight: 'bold', color: '#111827' },
+  moreButton: { padding: 8, borderRadius: 10, backgroundColor: '#F3F4F6' },
   logoutButton: { backgroundColor: '#e35336', padding: 10, borderRadius: 10 },
   kpiGrid: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 16, gap: 12 },
   kpiCard: { flex: 1, minWidth: '47%', backgroundColor: '#FFFFFF', borderRadius: 12, borderWidth: 1, borderColor: '#E2E8F0', padding: 14 },
