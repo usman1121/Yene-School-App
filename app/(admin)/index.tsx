@@ -1,41 +1,60 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, RefreshControl, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '@/contexts/AuthContext';
-import { adminDashboardApi, adminUsersApi, adminClassesApi, announcementsApi } from '@/api';
-import { unwrapArray } from '@/lib/api/utils';
+import { adminUsersApi, adminClassesApi, announcementsApi } from '@/api';
+import api from '@/api/client';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+
+const extractList = (res: any): any[] => {
+  const d = res?.data?.data || res?.data || res || [];
+  return Array.isArray(d) ? d : [];
+};
 
 export default function AdminDashboardScreen() {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const [userCount, setUserCount] = useState(0);
   const [teacherCount, setTeacherCount] = useState(0);
   const [classCount, setClassCount] = useState(0);
   const [announcements, setAnnouncements] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchData = useCallback(async () => {
+    setError(null);
     try {
-      const [usersRes, teachersRes, classesRes, annRes] = await Promise.allSettled([
+      const [dashRes, usersRes, classesRes, annRes] = await Promise.allSettled([
+        api.get('/dashboard/admin'),
         adminUsersApi.getUsers({ limit: 1 }),
-        adminUsersApi.getTeachers({ limit: 1 }),
         adminClassesApi.getClasses(),
         announcementsApi.getAll({ limit: 5 }),
       ]);
-      if (usersRes.status === 'fulfilled') {
-        const data = usersRes.value.data;
-        setUserCount(data?.meta?.total || data?.data?.length || 0);
+
+      if (dashRes.status === 'fulfilled') {
+        const d = dashRes.value?.data;
+        setUserCount(d?.stats?.totalUsers ?? d?.stats?.users ?? 0);
+        setTeacherCount(d?.stats?.totalTeachers ?? d?.stats?.teachers ?? 0);
+      } else {
+        if (usersRes.status === 'fulfilled') {
+          const u = extractList(usersRes.value);
+          setUserCount(u.length || usersRes.value?.data?.meta?.total || 0);
+        }
       }
-      if (teachersRes.status === 'fulfilled') {
-        const data = teachersRes.value.data;
-        setTeacherCount(data?.meta?.total || data?.data?.length || 0);
+
+      if (classesRes.status === 'fulfilled') {
+        setClassCount(extractList(classesRes.value).length);
       }
-      if (classesRes.status === 'fulfilled') setClassCount(unwrapArray(classesRes.value).length);
-      if (annRes.status === 'fulfilled') setAnnouncements(unwrapArray(annRes.value));
-    } catch (error) {
-      console.error('Failed to fetch dashboard:', error);
+
+      if (annRes.status === 'fulfilled') {
+        setAnnouncements(extractList(annRes.value));
+      }
+    } catch (err) {
+      console.error('Dashboard fetch error:', err);
+      setError('Failed to load dashboard data');
     } finally {
       setLoading(false);
     }
@@ -58,15 +77,27 @@ export default function AdminDashboardScreen() {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View style={[styles.loadingContainer, { paddingTop: insets.top }]}>
         <ActivityIndicator size="large" color="#e35336" />
         <Text style={styles.loadingText}>Loading dashboard...</Text>
       </View>
     );
   }
 
+  if (error) {
+    return (
+      <View style={[styles.loadingContainer, { paddingTop: insets.top }]}>
+        <Ionicons name="cloud-offline-outline" size={48} color="#EF4444" />
+        <Text style={[styles.loadingText, { color: '#EF4444' }]}>{error}</Text>
+        <TouchableOpacity style={styles.retryBtn} onPress={fetchData}>
+          <Text style={styles.retryText}>Retry</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   return (
-    <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#e35336']} />}>
+    <ScrollView style={[styles.container, { paddingTop: insets.top }]} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#e35336']} />}>
       <View style={styles.header}>
         <View>
           <Text style={styles.greeting}>{getGreeting()},</Text>
@@ -193,6 +224,8 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F8FAFC' },
   loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F8FAFC' },
   loadingText: { marginTop: 12, fontSize: 14, color: '#6B7280' },
+  retryBtn: { marginTop: 16, backgroundColor: '#e35336', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 8 },
+  retryText: { color: '#FFFFFF', fontWeight: '600', fontSize: 14 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', padding: 20, paddingTop: 16 },
   headerActions: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   greeting: { fontSize: 14, color: '#6B7280' },

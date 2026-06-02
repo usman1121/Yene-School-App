@@ -2,21 +2,21 @@ export { default as apiClient } from './client';
 
 export { authAPI, userAPI } from '@/lib/api/auth';
 export {
-  attendanceApi,
-  timetableApi,
-  gradingApi,
-  lessonsApi,
-  teachersApi,
-  academicApi,
+  attendanceAPI,
+  timetableAPI,
+  gradingAPI,
+  lessonsAPI,
+  teachersAPI,
+  academicAPI,
 } from '@/lib/api/teacher';
 export {
-  parentDashboardApi,
-  childrenApi,
-  parentAttendanceApi,
-  parentGradesApi,
-  parentFinanceApi,
-  parentTimetableApi,
-  parentLessonsApi,
+  parentDashboardAPI,
+  childrenAPI,
+  parentAttendanceAPI,
+  parentGradesAPI,
+  parentFinanceAPI,
+  parentTimetableAPI,
+  parentLessonsAPI,
 } from '@/lib/api/parent';
 export { announcementsApi, notificationsApi, calendarApi, dashboardApi, healthApi } from './common.api';
 export { studentApi } from './student.api';

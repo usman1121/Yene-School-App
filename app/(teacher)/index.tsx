@@ -14,7 +14,7 @@ import { announcementsAPI } from '@/lib/api/parent';
 import { unwrapArray } from '@/lib/api/utils';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import type { Lesson, Announcement, UpcomingClass } from '@/types';
+import type { Lesson, Announcement } from '@/types';
 
 export default function TeacherDashboardScreen() {
   const { user, logout } = useAuth();
