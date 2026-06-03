@@ -1,5 +1,5 @@
 import api from './core';
-import type { TimetableSlot, TeacherAssignment, StudentAttendance, StudentGrade, Lesson, UpcomingClass } from '@/types';
+import type { TimetableSlot, TeacherAssignment, StudentAttendance, StudentGrade, Lesson } from '@/types';
 
 export const attendanceAPI = {
   getTeacherDashboard: () => api.get('/attendance/dashboard/teacher'),
